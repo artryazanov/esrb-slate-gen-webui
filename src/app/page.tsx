@@ -80,6 +80,7 @@ export default function Page() {
   const [loading, setLoading] = useState(false);
   const [imageUrl, setImageUrl] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [foundGameInfo, setFoundGameInfo] = useState<{ title: string; url: string; rating: string } | null>(null);
 
   // Form State
   const [gameTitle, setGameTitle] = useState('');
@@ -103,6 +104,7 @@ export default function Page() {
     setLoading(true);
     setError(null);
     setImageUrl(null);
+    setFoundGameInfo(null);
 
     try {
       const payload = {
@@ -137,6 +139,14 @@ export default function Page() {
       const blob = await res.blob();
       const urlObject = URL.createObjectURL(blob);
       setImageUrl(urlObject);
+
+      const title = decodeURIComponent(res.headers.get('X-ESRB-Game-Title') || '');
+      const urlHeader = decodeURIComponent(res.headers.get('X-ESRB-Game-Url') || '');
+      const rating = res.headers.get('X-ESRB-Rating') || '';
+
+      if (title || urlHeader) {
+        setFoundGameInfo({ title, url: urlHeader, rating });
+      }
 
     } catch (err: unknown) {
       if (err instanceof Error) {
@@ -395,6 +405,16 @@ export default function Page() {
             <Card className="min-h-[300px] flex flex-col items-center justify-center p-2 bg-zinc-100 dark:bg-zinc-900/50">
               {imageUrl ? (
                 <div className="space-y-4 w-full">
+                  {foundGameInfo && (
+                    <div className="bg-white dark:bg-zinc-800 p-4 rounded-lg shadow-sm border border-zinc-200 dark:border-zinc-700 w-full animate-in fade-in slide-in-from-top-2 text-left">
+                      <h3 className="font-bold text-lg leading-tight mb-1 text-zinc-900 dark:text-zinc-100">{foundGameInfo.title} <span className="text-zinc-500 text-base font-normal">[{foundGameInfo.rating}]</span></h3>
+                      {foundGameInfo.url && (
+                        <a href={foundGameInfo.url} target="_blank" rel="noopener noreferrer" className="text-violet-600 dark:text-violet-400 hover:underline text-sm flex items-center inline-flex font-medium">
+                          View on ESRB.org <Link className="w-3 h-3 ml-1" />
+                        </a>
+                      )}
+                    </div>
+                  )}
                   <div className="relative rounded-lg overflow-hidden shadow-2xl border border-zinc-200 dark:border-zinc-800">
                     <img src={imageUrl} alt="Generated ESRB Slate" className="w-full h-auto" />
                   </div>
