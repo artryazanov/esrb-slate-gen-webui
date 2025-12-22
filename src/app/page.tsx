@@ -92,6 +92,7 @@ export default function Page() {
 
   const [is4k, setIs4k] = useState(false);
   const [margin, setMargin] = useState(0);
+  const [aspectRatio, setAspectRatio] = useState('auto');
 
   // Wait for hydration to avoid mismatch
   React.useEffect(() => {
@@ -118,7 +119,7 @@ export default function Page() {
         renderOptions: {
           is4k,
           margin: Number(margin),
-          heightFactor: 9 / 16 // Keeping it simple for now, can be exposed if needed
+          aspectRatio,
         }
       };
 
@@ -343,6 +344,23 @@ export default function Page() {
                     value={margin}
                     onChange={(e) => setMargin(Number(e.target.value))}
                   />
+                </div>
+
+                <div>
+                  <Label htmlFor="aspectRatio">Aspect Ratio</Label>
+                  <Select
+                    id="aspectRatio"
+                    value={aspectRatio}
+                    onChange={(e) => setAspectRatio(e.target.value)}
+                  >
+                    <option value="auto">Auto</option>
+                    <option value="16/9">16:9</option>
+                    <option value="17/9">17:9</option>
+                    <option value="18/9">18:9</option>
+                    <option value="19/9">19:9</option>
+                    <option value="20/9">20:9</option>
+                    <option value="21/9">21:9</option>
+                  </Select>
                 </div>
               </div>
 

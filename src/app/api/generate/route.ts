@@ -9,7 +9,19 @@ export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
     const { mode, gameTitle, platform, url, manualData, renderOptions } = body;
-    const { is4k = false, margin = 0, heightFactor = 9 / 16 } = renderOptions || {};
+    const { is4k = false, margin = 0, aspectRatio = 'auto' } = renderOptions || {};
+
+    let heightFactor = 0;
+    if (aspectRatio !== 'auto') {
+      const parts = aspectRatio.split('/');
+      if (parts.length === 2) {
+        const w = parseFloat(parts[0]);
+        const h = parseFloat(parts[1]);
+        if (!isNaN(w) && !isNaN(h) && w > 0) {
+          heightFactor = h / w;
+        }
+      }
+    }
 
     let data: ESRBData;
 

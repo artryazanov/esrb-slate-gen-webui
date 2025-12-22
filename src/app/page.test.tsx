@@ -18,12 +18,12 @@ describe('Page Component', () => {
     it('renders the page title and default mode (Scrape)', () => {
         render(<Page />);
         expect(screen.getByText('Create Your Slate')).toBeInTheDocument();
-        expect(screen.getByText('Auto-fill (Scrape)')).toBeInTheDocument();
+        expect(screen.getByText('Auto-fill')).toBeInTheDocument();
     });
 
     it('switches to Manual mode', () => {
         render(<Page />);
-        const manualButton = screen.getByText('Manual Entry');
+        const manualButton = screen.getByText('Manual');
         fireEvent.click(manualButton);
         expect(screen.getByLabelText('Content Descriptors')).toBeInTheDocument();
     });

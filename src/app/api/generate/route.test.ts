@@ -151,7 +151,37 @@ describe('API Route: /api/generate', () => {
             expect.stringContaining('mock-uuid'),
             0,
             false,
-            0.5625
+            0 // Expect auto mode (0) by default
+        );
+    });
+
+    it('should correctly calculate heightFactor from aspectRatio', async () => {
+        const manualData = {
+            title: 'Wide Game',
+            ratingCategory: 'E',
+        };
+        const req = new NextRequest('http://localhost/api/generate', {
+            method: 'POST',
+            body: JSON.stringify({
+                mode: 'manual',
+                manualData,
+                renderOptions: {
+                    aspectRatio: '21/9'
+                }
+            }),
+        });
+
+        const res = await POST(req);
+
+        expect(res.status).toBe(200);
+
+        expect(MockRenderService).toHaveBeenCalled();
+        expect(mockGenerate).toHaveBeenCalledWith(
+            expect.anything(),
+            expect.anything(),
+            0,
+            false,
+            expect.closeTo(9 / 21, 5) // 21:9 input means 9/21 height factor
         );
     });
 });
