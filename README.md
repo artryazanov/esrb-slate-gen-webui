@@ -1,5 +1,7 @@
 # ESRB Slate Generator Web UI
 
+A modern, responsive web interface for generating broadcast-ready ESRB rating slates. This tool serves as a frontend for the [esrb-slate-gen](https://github.com/artryazanov/esrb-slate-gen) library, allowing you to easily create high-resolution rating images by scraping official data or entering details manually.
+
 [![CI](https://github.com/artryazanov/esrb-slate-gen-webui/actions/workflows/ci.yml/badge.svg)](https://github.com/artryazanov/esrb-slate-gen-webui/actions/workflows/ci.yml)
 [![Docker Verify](https://github.com/artryazanov/esrb-slate-gen-webui/actions/workflows/docker-verify.yml/badge.svg)](https://github.com/artryazanov/esrb-slate-gen-webui/actions/workflows/docker-verify.yml)
 [![License](https://img.shields.io/github/license/artryazanov/esrb-slate-gen-webui)](LICENSE)
@@ -7,9 +9,6 @@
 ![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=flat&logo=typescript&logoColor=white)
 ![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS_4-38B2AC?style=flat&logo=tailwind-css&logoColor=white)
 ![React](https://img.shields.io/badge/React_19-20232A?style=flat&logo=react&logoColor=61DAFB)
-![Docker](https://img.shields.io/badge/Docker-2496ED?style=flat&logo=docker&logoColor=white)
-
-A modern, responsive web interface for generating broadcast-ready ESRB rating slates. This tool serves as a frontend for the [esrb-slate-gen](https://github.com/artryazanov/esrb-slate-gen) library, allowing you to easily create high-resolution rating images by scraping official data or entering details manually.
 
 ## Features
 
