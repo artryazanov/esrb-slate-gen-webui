@@ -1,0 +1,12 @@
+
+> esrb-slate-gen-webui@0.1.0 start
+> next start
+
+▲ Next.js 16.1.0
+- Local:         http://localhost:3000
+- Network:       http://192.168.0.2:3000
+
+✓ Starting...
+✓ Ready in 1325ms
+2025-12-22T10:08:47.985Z [INFO]: Slate saved to /tmp/esrb-slate-57b8bbd5-a6b3-49a7-b570-de3603e57640.png
+2025-12-22T10:10:52.384Z [INFO]: Slate saved to /tmp/esrb-slate-03ed8520-e4f1-4a5e-8085-9c5ed85b022c.png
