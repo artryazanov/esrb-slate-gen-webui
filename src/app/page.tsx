@@ -44,7 +44,7 @@ const Select = ({ className, ...props }: React.SelectHTMLAttributes<HTMLSelectEl
     />
     <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none opacity-50">
       <svg width="10" height="6" viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M1 1L5 5L9 1" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+        <path d="M1 1L5 5L9 1" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
       </svg>
     </div>
   </div>
@@ -85,7 +85,7 @@ export default function Page() {
   const [gameTitle, setGameTitle] = useState('');
   const [platform, setPlatform] = useState('PC');
 
-  const [manualTitle, setManualTitle] = useState('');
+
   const [ratingCategory, setRatingCategory] = useState('E');
   const [descriptors, setDescriptors] = useState('');
   const [interactiveElements, setInteractiveElements] = useState('');
@@ -109,7 +109,7 @@ export default function Page() {
         gameTitle: mode === 'scrape' ? gameTitle : undefined,
         platform: mode === 'scrape' ? platform : undefined,
         manualData: mode === 'manual' ? {
-          title: manualTitle,
+
           ratingCategory,
           descriptors: descriptors.split(',').map(s => s.trim()).filter(Boolean),
           interactiveElements: interactiveElements.split(',').map(s => s.trim()).filter(Boolean),
@@ -117,7 +117,7 @@ export default function Page() {
         renderOptions: {
           is4k,
           margin: Number(margin),
-          heightFactor: 9/16 // Keeping it simple for now, can be exposed if needed
+          heightFactor: 9 / 16 // Keeping it simple for now, can be exposed if needed
         }
       };
 
@@ -156,7 +156,7 @@ export default function Page() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
           <div className="flex items-center space-x-2">
             <div className="w-8 h-8 bg-violet-600 rounded-lg flex items-center justify-center">
-               <Gamepad2 className="text-white w-5 h-5" />
+              <Gamepad2 className="text-white w-5 h-5" />
             </div>
             <span className="font-bold text-lg tracking-tight">ESRB Slate Gen</span>
           </div>
@@ -242,30 +242,22 @@ export default function Page() {
               {/* Manual Form */}
               {mode === 'manual' && (
                 <div className="space-y-4 animate-in fade-in slide-in-from-top-2 duration-200">
-                  <div>
-                    <Label htmlFor="manualTitle">Game Title</Label>
-                    <Input
-                      id="manualTitle"
-                      placeholder="My Awesome Game"
-                      value={manualTitle}
-                      onChange={(e) => setManualTitle(e.target.value)}
-                    />
-                  </div>
+
                   <div className="grid grid-cols-2 gap-4">
                     <div>
-                        <Label htmlFor="rating">Rating</Label>
-                        <Select
-                            id="rating"
-                            value={ratingCategory}
-                            onChange={(e) => setRatingCategory(e.target.value)}
-                        >
-                            <option value="E">Everyone (E)</option>
-                            <option value="E10plus">Everyone 10+ (E10+)</option>
-                            <option value="T">Teen (T)</option>
-                            <option value="M">Mature (M)</option>
-                            <option value="AO">Adults Only (AO)</option>
-                            <option value="RP">Rating Pending (RP)</option>
-                        </Select>
+                      <Label htmlFor="rating">Rating</Label>
+                      <Select
+                        id="rating"
+                        value={ratingCategory}
+                        onChange={(e) => setRatingCategory(e.target.value)}
+                      >
+                        <option value="E">Everyone (E)</option>
+                        <option value="E10plus">Everyone 10+ (E10+)</option>
+                        <option value="T">Teen (T)</option>
+                        <option value="M">Mature (M)</option>
+                        <option value="AO">Adults Only (AO)</option>
+                        <option value="RP">Rating Pending (RP)</option>
+                      </Select>
                     </div>
                   </div>
                   <div>
@@ -286,55 +278,55 @@ export default function Page() {
                       value={interactiveElements}
                       onChange={(e) => setInteractiveElements(e.target.value)}
                     />
-                     <p className="text-xs text-zinc-500 mt-1">Comma separated</p>
+                    <p className="text-xs text-zinc-500 mt-1">Comma separated</p>
                   </div>
                 </div>
               )}
 
               {/* Common Options */}
               <div className="mt-8 pt-6 border-t border-zinc-200 dark:border-zinc-800 space-y-4">
-                 <div className="flex items-center justify-between">
-                    <Label className="mb-0">Render in 4K</Label>
-                    <button
-                        role="switch"
-                        aria-checked={is4k}
-                        onClick={() => setIs4k(!is4k)}
-                        className={cn(
-                            "w-11 h-6 rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-violet-500",
-                            is4k ? "bg-violet-600" : "bg-zinc-200 dark:bg-zinc-700"
-                        )}
-                    >
-                        <span className={cn(
-                            "block w-4 h-4 rounded-full bg-white transform transition-transform mt-1 ml-1",
-                            is4k ? "translate-x-5" : "translate-x-0"
-                        )} />
-                    </button>
-                 </div>
+                <div className="flex items-center justify-between">
+                  <Label className="mb-0">Render in 4K</Label>
+                  <button
+                    role="switch"
+                    aria-checked={is4k}
+                    onClick={() => setIs4k(!is4k)}
+                    className={cn(
+                      "w-11 h-6 rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-violet-500",
+                      is4k ? "bg-violet-600" : "bg-zinc-200 dark:bg-zinc-700"
+                    )}
+                  >
+                    <span className={cn(
+                      "block w-4 h-4 rounded-full bg-white transform transition-transform mt-1 ml-1",
+                      is4k ? "translate-x-5" : "translate-x-0"
+                    )} />
+                  </button>
+                </div>
 
-                 <div>
-                    <Label htmlFor="margin">Margin (0 for fullscreen)</Label>
-                    <Input
-                        id="margin"
-                        type="number"
-                        value={margin}
-                        onChange={(e) => setMargin(Number(e.target.value))}
-                    />
-                 </div>
+                <div>
+                  <Label htmlFor="margin">Margin (0 for fullscreen)</Label>
+                  <Input
+                    id="margin"
+                    type="number"
+                    value={margin}
+                    onChange={(e) => setMargin(Number(e.target.value))}
+                  />
+                </div>
               </div>
 
               <div className="mt-8">
                 <Button
-                    className="w-full h-12 text-lg"
-                    onClick={handleGenerate}
-                    isLoading={loading}
-                    disabled={mode === 'scrape' && !gameTitle}
+                  className="w-full h-12 text-lg"
+                  onClick={handleGenerate}
+                  isLoading={loading}
+                  disabled={mode === 'scrape' && !gameTitle}
                 >
-                    {loading ? 'Generating...' : 'Generate Slate'}
+                  {loading ? 'Generating...' : 'Generate Slate'}
                 </Button>
                 {error && (
-                    <div className="mt-4 p-3 bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 text-sm rounded-lg">
-                        {error}
-                    </div>
+                  <div className="mt-4 p-3 bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 text-sm rounded-lg">
+                    {error}
+                  </div>
                 )}
               </div>
 
@@ -344,35 +336,35 @@ export default function Page() {
           {/* Preview Section */}
           <div className="lg:sticky lg:top-24 h-fit">
             <h2 className="text-xl font-semibold mb-4 flex items-center">
-                <Monitor className="w-5 h-5 mr-2" />
-                Preview
+              <Monitor className="w-5 h-5 mr-2" />
+              Preview
             </h2>
             <Card className="min-h-[300px] flex flex-col items-center justify-center p-2 bg-zinc-100 dark:bg-zinc-900/50">
-                {imageUrl ? (
-                    <div className="space-y-4 w-full">
-                         <div className="relative rounded-lg overflow-hidden shadow-2xl border border-zinc-200 dark:border-zinc-800">
-                             <img src={imageUrl} alt="Generated ESRB Slate" className="w-full h-auto" />
-                         </div>
-                         <div className="flex justify-center">
-                             <a
-                                href={imageUrl}
-                                download={`esrb-slate.png`}
-                                className="inline-flex items-center justify-center px-6 py-3 rounded-lg bg-zinc-900 dark:bg-zinc-100 text-zinc-100 dark:text-zinc-900 font-medium hover:scale-105 transition-transform"
-                             >
-                                <Download className="w-4 h-4 mr-2" />
-                                Download Image
-                             </a>
-                         </div>
-                    </div>
-                ) : (
-                    <div className="text-center text-zinc-400 dark:text-zinc-600">
-                        <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-zinc-200 dark:bg-zinc-800 flex items-center justify-center">
-                            <Monitor className="w-8 h-8 opacity-50" />
-                        </div>
-                        <p>No slate generated yet.</p>
-                        <p className="text-sm">Fill the form and hit Generate!</p>
-                    </div>
-                )}
+              {imageUrl ? (
+                <div className="space-y-4 w-full">
+                  <div className="relative rounded-lg overflow-hidden shadow-2xl border border-zinc-200 dark:border-zinc-800">
+                    <img src={imageUrl} alt="Generated ESRB Slate" className="w-full h-auto" />
+                  </div>
+                  <div className="flex justify-center">
+                    <a
+                      href={imageUrl}
+                      download={`esrb-slate.png`}
+                      className="inline-flex items-center justify-center px-6 py-3 rounded-lg bg-zinc-900 dark:bg-zinc-100 text-zinc-100 dark:text-zinc-900 font-medium hover:scale-105 transition-transform"
+                    >
+                      <Download className="w-4 h-4 mr-2" />
+                      Download Image
+                    </a>
+                  </div>
+                </div>
+              ) : (
+                <div className="text-center text-zinc-400 dark:text-zinc-600">
+                  <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-zinc-200 dark:bg-zinc-800 flex items-center justify-center">
+                    <Monitor className="w-8 h-8 opacity-50" />
+                  </div>
+                  <p>No slate generated yet.</p>
+                  <p className="text-sm">Fill the form and hit Generate!</p>
+                </div>
+              )}
             </Card>
           </div>
         </div>

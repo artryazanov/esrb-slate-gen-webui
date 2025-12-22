@@ -28,11 +28,11 @@ export async function POST(req: NextRequest) {
         return NextResponse.json({ error: 'Failed to scrape game data. Ensure the title is correct or try manual mode.' }, { status: 500 });
       }
     } else if (mode === 'manual') {
-      if (!manualData || !manualData.title || !manualData.ratingCategory) {
+      if (!manualData || !manualData.ratingCategory) {
         return NextResponse.json({ error: 'Missing required manual data fields.' }, { status: 400 });
       }
       data = {
-        title: manualData.title,
+        title: manualData.title || 'Manual Entry',
         ratingCategory: manualData.ratingCategory,
         descriptors: manualData.descriptors || [],
         interactiveElements: manualData.interactiveElements || [],
@@ -58,8 +58,8 @@ export async function POST(req: NextRequest) {
         heightFactor
       );
     } catch (error) {
-       console.error('Rendering error:', error);
-       return NextResponse.json({ error: 'Failed to generate image.' }, { status: 500 });
+      console.error('Rendering error:', error);
+      return NextResponse.json({ error: 'Failed to generate image.' }, { status: 500 });
     }
 
     // Read the file
