@@ -36,9 +36,7 @@ async function findGameUrl(query: string): Promise<string | null> {
       if (firstHref) targetUrl = firstHref;
     }
 
-    if (targetUrl) { // @ts-ignore
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
+    if (targetUrl) {
       return targetUrl.startsWith('http') ? targetUrl : `https://www.esrb.org${targetUrl}`;
     }
     return null;

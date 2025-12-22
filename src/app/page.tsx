@@ -416,6 +416,7 @@ export default function Page() {
                     </div>
                   )}
                   <div className="relative rounded-lg overflow-hidden shadow-2xl border border-zinc-200 dark:border-zinc-800">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img src={imageUrl} alt="Generated ESRB Slate" className="w-full h-auto" />
                   </div>
                   <div className="flex justify-center">
