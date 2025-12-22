@@ -8,7 +8,7 @@ import crypto from 'crypto';
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    const { mode, gameTitle, platform, manualData, renderOptions } = body;
+    const { mode, gameTitle, platform, url, manualData, renderOptions } = body;
     const { is4k = false, margin = 0, heightFactor = 9 / 16 } = renderOptions || {};
 
     let data: ESRBData;
@@ -26,6 +26,17 @@ export async function POST(req: NextRequest) {
       } catch (error) {
         console.error('Scraping error:', error);
         return NextResponse.json({ error: 'Failed to scrape game data. Ensure the title is correct or try manual mode.' }, { status: 500 });
+      }
+    } else if (mode === 'url') {
+      if (!url) {
+        return NextResponse.json({ error: 'URL is required for URL mode.' }, { status: 400 });
+      }
+      const scraper = new ScraperService();
+      try {
+        data = await scraper.getGameDataFromUrl(url);
+      } catch (error) {
+        console.error('URL Scraping error:', error);
+        return NextResponse.json({ error: 'Failed to scrape game data from URL. Ensure the URL is correct.' }, { status: 500 });
       }
     } else if (mode === 'manual') {
       if (!manualData || !manualData.ratingCategory) {

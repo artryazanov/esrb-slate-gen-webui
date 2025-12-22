@@ -25,6 +25,7 @@ describe('API Route: /api/generate', () => {
 
     // Variables to hold the mock functions we inject
     let mockGetGameData: jest.Mock;
+    let mockGetGameDataFromUrl: jest.Mock;
     let mockGenerate: jest.Mock;
 
     beforeEach(() => {
@@ -37,11 +38,19 @@ describe('API Route: /api/generate', () => {
             interactiveElements: [],
         });
 
+        mockGetGameDataFromUrl = jest.fn().mockResolvedValue({
+            title: 'Mock Game URL',
+            ratingCategory: 'T',
+            descriptors: ['Violence'],
+            interactiveElements: [],
+        });
+
         mockGenerate = jest.fn().mockResolvedValue(undefined);
 
         // Setup Mock Implementations using the captured variables
         MockScraperService.mockImplementation(() => ({
             getGameData: mockGetGameData,
+            getGameDataFromUrl: mockGetGameDataFromUrl,
         }));
 
         MockRenderService.mockImplementation(() => ({
@@ -78,6 +87,25 @@ describe('API Route: /api/generate', () => {
         // Check if scraper was called
         expect(MockScraperService).toHaveBeenCalled();
         expect(mockGetGameData).toHaveBeenCalledWith('Hades', 'PC');
+    });
+
+    it('should scrape game data from URL and return an image', async () => {
+        const req = new NextRequest('http://localhost/api/generate', {
+            method: 'POST',
+            body: JSON.stringify({
+                mode: 'url',
+                url: 'https://www.esrb.org/ratings/39986/hades/',
+            }),
+        });
+
+        const res = await POST(req);
+
+        expect(res.status).toBe(200);
+        expect(res.headers.get('Content-Type')).toBe('image/png');
+
+        // Check if scraper was called
+        expect(MockScraperService).toHaveBeenCalled();
+        expect(mockGetGameDataFromUrl).toHaveBeenCalledWith('https://www.esrb.org/ratings/39986/hades/');
     });
 
     it('should return 400 if gameTitle is missing in scrape mode', async () => {

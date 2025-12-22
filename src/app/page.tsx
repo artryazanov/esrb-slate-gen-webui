@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { useTheme } from 'next-themes';
-import { Download, Monitor, Moon, Sun, Search, FileEdit, Loader2, Gamepad2 } from 'lucide-react';
+import { Download, Monitor, Moon, Sun, Search, FileEdit, Loader2, Gamepad2, Link } from 'lucide-react';
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 
@@ -76,7 +76,7 @@ const Button = ({ className, variant = 'primary', isLoading, children, ...props 
 export default function Page() {
   const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
-  const [mode, setMode] = useState<'scrape' | 'manual'>('scrape');
+  const [mode, setMode] = useState<'scrape' | 'manual' | 'url'>('scrape');
   const [loading, setLoading] = useState(false);
   const [imageUrl, setImageUrl] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -84,7 +84,7 @@ export default function Page() {
   // Form State
   const [gameTitle, setGameTitle] = useState('');
   const [platform, setPlatform] = useState('');
-
+  const [url, setUrl] = useState('');
 
   const [ratingCategory, setRatingCategory] = useState('E');
   const [descriptors, setDescriptors] = useState('');
@@ -108,6 +108,7 @@ export default function Page() {
         mode,
         gameTitle: mode === 'scrape' ? gameTitle : undefined,
         platform: mode === 'scrape' && platform ? platform : undefined,
+        url: mode === 'url' ? url : undefined,
         manualData: mode === 'manual' ? {
 
           ratingCategory,
@@ -133,8 +134,8 @@ export default function Page() {
       }
 
       const blob = await res.blob();
-      const url = URL.createObjectURL(blob);
-      setImageUrl(url);
+      const urlObject = URL.createObjectURL(blob);
+      setImageUrl(urlObject);
 
     } catch (err: unknown) {
       if (err instanceof Error) {
@@ -194,7 +195,19 @@ export default function Page() {
                   )}
                 >
                   <Search className="w-4 h-4 mr-2" />
-                  Auto-fill (Scrape)
+                  Auto-fill
+                </button>
+                <button
+                  onClick={() => setMode('url')}
+                  className={cn(
+                    "flex-1 flex items-center justify-center px-4 py-2 rounded-md text-sm font-medium transition-all",
+                    mode === 'url'
+                      ? "bg-white dark:bg-zinc-800 text-violet-600 dark:text-violet-400 shadow-sm"
+                      : "text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300"
+                  )}
+                >
+                  <Link className="w-4 h-4 mr-2" />
+                  By URL
                 </button>
                 <button
                   onClick={() => setMode('manual')}
@@ -206,7 +219,7 @@ export default function Page() {
                   )}
                 >
                   <FileEdit className="w-4 h-4 mr-2" />
-                  Manual Entry
+                  Manual
                 </button>
               </div>
 
@@ -239,6 +252,21 @@ export default function Page() {
                       <option value="PC">PC</option>
                       <option value="Other">Other</option>
                     </Select>
+                  </div>
+                </div>
+              )}
+
+              {/* URL Form */}
+              {mode === 'url' && (
+                <div className="space-y-4 animate-in fade-in slide-in-from-top-2 duration-200">
+                  <div>
+                    <Label htmlFor="url">ESRB Game URL</Label>
+                    <Input
+                      id="url"
+                      placeholder="https://www.esrb.org/ratings/..."
+                      value={url}
+                      onChange={(e) => setUrl(e.target.value)}
+                    />
                   </div>
                 </div>
               )}
@@ -323,7 +351,10 @@ export default function Page() {
                   className="w-full h-12 text-lg"
                   onClick={handleGenerate}
                   isLoading={loading}
-                  disabled={mode === 'scrape' && !gameTitle}
+                  disabled={
+                    (mode === 'scrape' && !gameTitle) ||
+                    (mode === 'url' && !url)
+                  }
                 >
                   {loading ? 'Generating...' : 'Generate Slate'}
                 </Button>
