@@ -12,13 +12,14 @@ A modern, responsive web interface for generating broadcast-ready ESRB rating sl
 
 ## Features
 
-- **Automatic Data Scraping**: Instantly fetch game rating information directly from the ESRB website by game title and platform.
+- **Automatic Data Fetching**: Instantly fetch game rating information directly from the ESRB website by **Game Title** or **URL**.
 - **Manual Entry Mode**: Fully customizable mode to manually input Rating Category, Content Descriptors, and Interactive Elements.
 - **High-Resolution Output**: Generate standard or 4K resolution PNG images.
-- **Customizable Layout**: Adjust margins to fit different safe zones or specific broadcast requirements.
-- **Live Preview**: Real-time visual feedback of the generated slate.
+- **Customizable Layout**: Adjust margins and aspect ratios (Auto, 16:9, 21:9, etc.) to fit specific broadcast requirements.
+- **Live Preview**: Real-time visual feedback of the generated slate with detailed game info.
 - **Dark Mode**: Sleek UI with support for both light and dark themes.
 - **Docker Support**: Containerized for easy deployment.
+- **Comprehensive Testing**: Fully tested with Jest and React Testing Library.
 
 ## Tech Stack
 
@@ -26,6 +27,7 @@ A modern, responsive web interface for generating broadcast-ready ESRB rating sl
 - **Language**: TypeScript
 - **Styling**: [Tailwind CSS 4](https://tailwindcss.com/)
 - **Icons**: [Lucide React](https://lucide.dev/)
+- **Testing**: [Jest](https://jestjs.io/) & [React Testing Library](https://testing-library.com/)
 - **Core Library**: [esrb-slate-gen](https://www.npmjs.com/package/esrb-slate-gen)
 
 ## Getting Started
@@ -76,13 +78,32 @@ Access the application at [http://localhost:3000](http://localhost:3000).
 
 ## Usage Guide
 
-1. **Select Mode**: Choose between "Auto-fill (Scrape)" or "Manual Entry".
+1. **Select Mode**: Choose between "Auto-fill", "By URL", or "Manual".
 2. **Input Data**:
-   - *Scrape Mode*: Enter the Game Title and select the Platform.
-   - *Manual Mode*: Select the Rating, then enter Descriptors (comma-separated), and Interactive Elements.
-3. **Configure Options**: Toggle "Render in 4K" or adjust the "Margin" as needed.
+   - *Auto-fill*: Enter the Game Title and optionally filter by Platform.
+   - *By URL*: Paste a specific game URL from the ESRB website.
+   - *Manual*: Select the Rating, then enter Descriptors (comma-separated), and Interactive Elements.
+3. **Configure Options**: Toggle "Render in 4K", set "Margin", or choose an "Aspect Ratio".
 4. **Generate**: Click "Generate Slate".
 5. **Download**: Once the preview appears, click "Download Image" to save the PNG.
+
+## Development
+
+### Running Tests
+
+This project uses Jest and React Testing Library for ensuring code quality.
+
+Run the test suite:
+
+```bash
+npm test
+```
+
+Run tests in watch mode:
+
+```bash
+npm run test:watch
+```
 
 ## License
 
