@@ -100,8 +100,8 @@ export async function POST(req: NextRequest) {
     // Add Metadata Headers
     headers.set('X-ESRB-Game-Title', encodeURIComponent(data.title));
     headers.set('X-ESRB-Rating', data.ratingCategory);
-    if (finalGameUrl) {
-      headers.set('X-ESRB-Game-Url', encodeURIComponent(finalGameUrl));
+    if (finalGameUrl || data.esrbUrl) {
+      headers.set('X-ESRB-Game-Url', encodeURIComponent(finalGameUrl || data.esrbUrl || ''));
     }
 
     // Return the image

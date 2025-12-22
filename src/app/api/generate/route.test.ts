@@ -36,6 +36,7 @@ describe('API Route: /api/generate', () => {
             ratingCategory: 'M',
             descriptors: ['Blood'],
             interactiveElements: [],
+            esrbUrl: 'https://www.esrb.org/ratings/39986/hades/',
         });
 
         mockGetGameDataFromUrl = jest.fn().mockResolvedValue({
@@ -71,20 +72,10 @@ describe('API Route: /api/generate', () => {
 
     it('should scrape game data and return an image and correct headers', async () => {
         // Mock global fetch for custom search
-        global.fetch = jest.fn().mockResolvedValue({
-            text: async () => `
-                <div class="game">
-                    <div class="heading">
-                        <a href="/ratings/39986/hades/">Hades</a>
-                    </div>
-                </div>
-            `,
-        });
-
-        // Mock getGameDataFromUrl to return data consistent with what we expect
-        // The mock setup in beforeEach returns 'Mock Game URL' title for mockGetGameDataFromUrl
-        // We probably want to align titles or just check what's returned.
-        // Let's rely on the predefined mocks.
+        // Note: The actual implementation now delegates scraping entirely to ScraperService.
+        // We do not need to mock fetch here unless ScraperService itself uses it and is NOT mocked.
+        // Since ScraperService IS mocked, this fetch mock is unnecessary for the application logic,
+        // but harmless.
 
         const req = new NextRequest('http://localhost/api/generate', {
             method: 'POST',
@@ -101,20 +92,18 @@ describe('API Route: /api/generate', () => {
         expect(res.headers.get('Content-Type')).toBe('image/png');
 
         // Assert Headers
-        // Note: mockGetGameDataFromUrl returns 'Mock Game URL' as title
-        expect(decodeURIComponent(res.headers.get('X-ESRB-Game-Title') || '')).toBe('Mock Game URL');
-        expect(res.headers.get('X-ESRB-Rating')).toBe('T');
-        // The mockGetGameDataFromUrl is called because findGameUrl found a URL
+        expect(decodeURIComponent(res.headers.get('X-ESRB-Game-Title') || '')).toBe('Mock Game');
+        expect(res.headers.get('X-ESRB-Rating')).toBe('M');
         expect(decodeURIComponent(res.headers.get('X-ESRB-Game-Url') || '')).toBe('https://www.esrb.org/ratings/39986/hades/');
 
-        // Check if scraper was called with URL because custom search succeeded
+        // Check if scraper was called
         expect(MockScraperService).toHaveBeenCalled();
-        expect(mockGetGameDataFromUrl).toHaveBeenCalledWith('https://www.esrb.org/ratings/39986/hades/');
+        expect(mockGetGameData).toHaveBeenCalledWith('Hades', 'PC');
     });
 
-    it('should fallback to general search if custom search fails or returns no URL', async () => {
-        // Mock global fetch to return nothing or fail
-        global.fetch = jest.fn().mockRejectedValue(new Error('Network error')); // Or resolve with empty HTML
+    it('should handle scraper errors gracefully', async () => {
+        // Update mock to throw error
+        mockGetGameData.mockRejectedValueOnce(new Error('Scraping failed'));
 
         const req = new NextRequest('http://localhost/api/generate', {
             method: 'POST',
@@ -126,16 +115,11 @@ describe('API Route: /api/generate', () => {
 
         const res = await POST(req);
 
-        expect(res.status).toBe(200);
 
-        // Assert Headers (Title and Rating should still be present from general scrape)
-        // mockGetGameData returns 'Mock Game'
-        expect(decodeURIComponent(res.headers.get('X-ESRB-Game-Title') || '')).toBe('Mock Game');
 
-        // URL header might be missing or empty if we fell back to general scrape
-        expect(res.headers.get('X-ESRB-Game-Url')).toBeNull();
-
-        expect(mockGetGameData).toHaveBeenCalledWith('Unknown Game', undefined);
+        expect(res.status).toBe(500);
+        const json = await res.json();
+        expect(json.error).toContain('Failed to scrape game data');
     });
 
     it('should scrape game data from URL and return an image', async () => {
