@@ -69,7 +69,23 @@ describe('API Route: /api/generate', () => {
         expect(json.error).toBe('Invalid mode.');
     });
 
-    it('should scrape game data and return an image', async () => {
+    it('should scrape game data and return an image and correct headers', async () => {
+        // Mock global fetch for custom search
+        global.fetch = jest.fn().mockResolvedValue({
+            text: async () => `
+                <div class="game">
+                    <div class="heading">
+                        <a href="/ratings/39986/hades/">Hades</a>
+                    </div>
+                </div>
+            `,
+        });
+
+        // Mock getGameDataFromUrl to return data consistent with what we expect
+        // The mock setup in beforeEach returns 'Mock Game URL' title for mockGetGameDataFromUrl
+        // We probably want to align titles or just check what's returned.
+        // Let's rely on the predefined mocks.
+
         const req = new NextRequest('http://localhost/api/generate', {
             method: 'POST',
             body: JSON.stringify({
@@ -84,9 +100,42 @@ describe('API Route: /api/generate', () => {
         expect(res.status).toBe(200);
         expect(res.headers.get('Content-Type')).toBe('image/png');
 
-        // Check if scraper was called
+        // Assert Headers
+        // Note: mockGetGameDataFromUrl returns 'Mock Game URL' as title
+        expect(decodeURIComponent(res.headers.get('X-ESRB-Game-Title') || '')).toBe('Mock Game URL');
+        expect(res.headers.get('X-ESRB-Rating')).toBe('T');
+        // The mockGetGameDataFromUrl is called because findGameUrl found a URL
+        expect(decodeURIComponent(res.headers.get('X-ESRB-Game-Url') || '')).toBe('https://www.esrb.org/ratings/39986/hades/');
+
+        // Check if scraper was called with URL because custom search succeeded
         expect(MockScraperService).toHaveBeenCalled();
-        expect(mockGetGameData).toHaveBeenCalledWith('Hades', 'PC');
+        expect(mockGetGameDataFromUrl).toHaveBeenCalledWith('https://www.esrb.org/ratings/39986/hades/');
+    });
+
+    it('should fallback to general search if custom search fails or returns no URL', async () => {
+        // Mock global fetch to return nothing or fail
+        global.fetch = jest.fn().mockRejectedValue(new Error('Network error')); // Or resolve with empty HTML
+
+        const req = new NextRequest('http://localhost/api/generate', {
+            method: 'POST',
+            body: JSON.stringify({
+                mode: 'scrape',
+                gameTitle: 'Unknown Game',
+            }),
+        });
+
+        const res = await POST(req);
+
+        expect(res.status).toBe(200);
+
+        // Assert Headers (Title and Rating should still be present from general scrape)
+        // mockGetGameData returns 'Mock Game'
+        expect(decodeURIComponent(res.headers.get('X-ESRB-Game-Title') || '')).toBe('Mock Game');
+
+        // URL header might be missing or empty if we fell back to general scrape
+        expect(res.headers.get('X-ESRB-Game-Url')).toBeNull();
+
+        expect(mockGetGameData).toHaveBeenCalledWith('Unknown Game', undefined);
     });
 
     it('should scrape game data from URL and return an image', async () => {

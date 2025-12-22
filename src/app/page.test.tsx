@@ -28,10 +28,16 @@ describe('Page Component', () => {
         expect(screen.getByLabelText('Content Descriptors')).toBeInTheDocument();
     });
 
-    it('handles scrape form submission', async () => {
+    it('handles scrape form submission and displays found game info', async () => {
+        // Mock global fetch to return headers
         (global.fetch as jest.Mock).mockResolvedValueOnce({
             ok: true,
             blob: async () => new Blob(['mock-image'], { type: 'image/png' }),
+            headers: new Headers({
+                'X-ESRB-Game-Title': encodeURIComponent('Found Game Title'),
+                'X-ESRB-Game-Url': encodeURIComponent('https://esrb.org/game'),
+                'X-ESRB-Rating': 'M'
+            })
         });
 
         // Mock URL.createObjectURL
@@ -56,6 +62,13 @@ describe('Page Component', () => {
 
         await waitFor(() => {
             expect(screen.getByAltText('Generated ESRB Slate')).toBeInTheDocument();
+
+            // Check for Found Game Info Card
+            expect(screen.getByText('Found Game Title')).toBeInTheDocument();
+            expect(screen.getByText('[M]')).toBeInTheDocument();
+            const link = screen.getByText('View on ESRB.org');
+            expect(link).toBeInTheDocument();
+            expect(link.closest('a')).toHaveAttribute('href', 'https://esrb.org/game');
         });
     });
 
