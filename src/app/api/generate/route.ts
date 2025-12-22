@@ -35,11 +35,13 @@ export async function POST(req: NextRequest) {
 
       try {
         data = await scraper.getGameData(gameTitle, platform);
+        if (data.esrbUrl) {
+          finalGameUrl = data.esrbUrl;
+        }
       } catch (error) {
         console.error('Scraping error:', error);
         return NextResponse.json({ error: 'Failed to scrape game data. Ensure the title is correct or try manual mode.' }, { status: 500 });
       }
-
     } else if (mode === 'url') {
       if (!providedUrl) {
         return NextResponse.json({ error: 'URL is required for URL mode.' }, { status: 400 });
