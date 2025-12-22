@@ -83,7 +83,7 @@ export default function Page() {
 
   // Form State
   const [gameTitle, setGameTitle] = useState('');
-  const [platform, setPlatform] = useState('PC');
+  const [platform, setPlatform] = useState('');
 
 
   const [ratingCategory, setRatingCategory] = useState('E');
@@ -107,7 +107,7 @@ export default function Page() {
       const payload = {
         mode,
         gameTitle: mode === 'scrape' ? gameTitle : undefined,
-        platform: mode === 'scrape' ? platform : undefined,
+        platform: mode === 'scrape' && platform ? platform : undefined,
         manualData: mode === 'manual' ? {
 
           ratingCategory,
@@ -229,11 +229,15 @@ export default function Page() {
                       value={platform}
                       onChange={(e) => setPlatform(e.target.value)}
                     >
-                      <option value="PC">PC</option>
-                      <option value="PlayStation 5">PlayStation 5</option>
-                      <option value="Xbox Series">Xbox Series</option>
+                      <option value="">All Platforms</option>
+                      <option value="Nintendo Switch 2">Nintendo Switch 2</option>
                       <option value="Nintendo Switch">Nintendo Switch</option>
-                      {/* Add more as needed */}
+                      <option value="PlayStation 5">PlayStation 5</option>
+                      <option value="PlayStation 4">PlayStation 4</option>
+                      <option value="Xbox Series">Xbox Series</option>
+                      <option value="Xbox One">Xbox One</option>
+                      <option value="PC">PC</option>
+                      <option value="Other">Other</option>
                     </Select>
                   </div>
                 </div>
