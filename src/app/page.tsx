@@ -190,7 +190,10 @@ export default function Page() {
           <div className="space-y-6">
             <div>
               <h1 className="text-3xl font-bold mb-2">Create Your Slate</h1>
-              <p className="text-zinc-500 dark:text-zinc-400">Generate broadcast-ready ESRB ratings in seconds.</p>
+              <p className="text-zinc-500 dark:text-zinc-400 mb-2">Generate broadcast-ready ESRB ratings in seconds.</p>
+              <p className="text-sm text-zinc-500 dark:text-zinc-400">
+                Open source project. <a href="https://github.com/artryazanov/esrb-slate-gen-webui" target="_blank" rel="noopener noreferrer" className="text-violet-600 dark:text-violet-400 hover:underline inline-flex items-center">Check it out on GitHub</a>
+              </p>
             </div>
 
             <Card className="p-6">
@@ -442,7 +445,7 @@ export default function Page() {
             </Card>
           </div>
         </div>
-      </main>
-    </div>
+      </main >
+    </div >
   );
 }
