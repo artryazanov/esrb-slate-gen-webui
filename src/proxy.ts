@@ -16,7 +16,7 @@ const rateLimitCache = new LRUCache<string, { count: number; start: number }>({
     ttlResolution: 1000,
 });
 
-export function middleware(request: NextRequest) {
+export function proxy(request: NextRequest) {
     // Only apply rate limiting to /api/generate
     if (request.nextUrl.pathname.startsWith('/api/generate')) {
         // Get IP address

@@ -1,10 +1,10 @@
 /**
  * @jest-environment node
  */
-import { middleware } from './middleware';
+import { proxy } from './proxy';
 import { NextRequest } from 'next/server';
 
-describe('Middleware Rate Limiting', () => {
+describe('Proxy Rate Limiting', () => {
     const SCRIPT_NAME = '/api/generate';
 
     const createRequest = (ip: string) => {
@@ -25,7 +25,7 @@ describe('Middleware Rate Limiting', () => {
         const ip = '1.1.1.1';
         for (let i = 0; i < 5; i++) {
             const req = createRequest(ip);
-            const res = await middleware(req);
+            const res = await proxy(req);
             // Middleware returns NextResponse.next() which usually has status 200 (or serves as a pass-through)
             // Strictly speaking middleware that passes returns a response that indicates continuation.
             // In Next.js middleware, NextResponse.next() returns a response with specific internal headers or just a 200 ok for testing purposes.
@@ -40,12 +40,12 @@ describe('Middleware Rate Limiting', () => {
         // Exhaust limit
         for (let i = 0; i < 30; i++) {
             const req = createRequest(ip);
-            await middleware(req);
+            await proxy(req);
         }
 
         // Next request should fail
         const req = createRequest(ip);
-        const res = await middleware(req);
+        const res = await proxy(req);
         expect(res.status).toBe(429);
         expect(res.headers.get('X-RateLimit-Remaining')).toBe('0');
         expect(res.headers.get('Retry-After')).toBeDefined();
@@ -57,7 +57,7 @@ describe('Middleware Rate Limiting', () => {
 
     it('should ignore other paths', async () => {
         const req = new NextRequest(new URL('http://localhost/other-path'));
-        const res = await middleware(req);
+        const res = await proxy(req);
         // Should pass through without rate limit headers
         expect(res.headers.get('X-RateLimit-Limit')).toBeNull();
         expect(res.status).toBe(200);
@@ -68,18 +68,18 @@ describe('Middleware Rate Limiting', () => {
             process.env.RATE_LIMIT_MAX_REQUESTS = '5';
             // Require fresh module to pick up env var
             // eslint-disable-next-line @typescript-eslint/no-require-imports
-            const { middleware: isolatedMiddleware } = require('./middleware');
+            const { proxy: isolatedProxy } = require('./proxy');
             const ip = '3.3.3.3';
 
             // 5 requests allowed
             for (let i = 0; i < 5; i++) {
-                const res = isolatedMiddleware(createRequest(ip));
+                const res = isolatedProxy(createRequest(ip));
                 expect(res.status).toBe(200);
                 expect(res.headers.get('X-RateLimit-Limit')).toBe('5');
             }
 
             // 6th blocked
-            const res = isolatedMiddleware(createRequest(ip));
+            const res = isolatedProxy(createRequest(ip));
             expect(res.status).toBe(429);
             expect(res.headers.get('X-RateLimit-Remaining')).toBe('0');
             expect(res.headers.get('Retry-After')).toBeDefined();
