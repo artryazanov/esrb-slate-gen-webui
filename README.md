@@ -7,7 +7,7 @@ A modern, responsive web interface for generating broadcast-ready ESRB rating sl
 <img src="https://raw.githubusercontent.com/artryazanov/esrb-slate-gen-webui/main/esrb-slate-gen-webui-preview.png" alt="ESRB Slate Gen Preview" width="640" />
 
 [![CI](https://github.com/artryazanov/esrb-slate-gen-webui/actions/workflows/ci.yml/badge.svg)](https://github.com/artryazanov/esrb-slate-gen-webui/actions/workflows/ci.yml)
-[![Docker Verify](https://github.com/artryazanov/esrb-slate-gen-webui/actions/workflows/docker-verify.yml/badge.svg)](https://github.com/artryazanov/esrb-slate-gen-webui/actions/workflows/docker-verify.yml)
+[![Docker Publish](https://github.com/artryazanov/esrb-slate-gen-webui/actions/workflows/docker-publish.yml/badge.svg)](https://github.com/artryazanov/esrb-slate-gen-webui/actions/workflows/docker-publish.yml)
 [![License](https://img.shields.io/github/license/artryazanov/esrb-slate-gen-webui)](LICENSE)
 ![Next.js](https://img.shields.io/badge/Next.js_16-black?style=flat&logo=next.js&logoColor=white)
 ![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=flat&logo=typescript&logoColor=white)
