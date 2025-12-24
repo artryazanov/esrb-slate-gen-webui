@@ -4,6 +4,8 @@ A modern, responsive web interface for generating broadcast-ready ESRB rating sl
 
 **[Live Demo](https://esrb-slate-gen-webui.vercel.app/)**
 
+<img src="https://raw.githubusercontent.com/artryazanov/esrb-slate-gen-webui/main/esrb-slate-gen-webui-preview.png" alt="ESRB Slate Gen Preview" width="640" />
+
 [![CI](https://github.com/artryazanov/esrb-slate-gen-webui/actions/workflows/ci.yml/badge.svg)](https://github.com/artryazanov/esrb-slate-gen-webui/actions/workflows/ci.yml)
 [![Docker Verify](https://github.com/artryazanov/esrb-slate-gen-webui/actions/workflows/docker-verify.yml/badge.svg)](https://github.com/artryazanov/esrb-slate-gen-webui/actions/workflows/docker-verify.yml)
 [![License](https://img.shields.io/github/license/artryazanov/esrb-slate-gen-webui)](LICENSE)
