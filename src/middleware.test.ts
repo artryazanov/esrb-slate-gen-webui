@@ -49,6 +49,10 @@ describe('Middleware Rate Limiting', () => {
         expect(res.status).toBe(429);
         expect(res.headers.get('X-RateLimit-Remaining')).toBe('0');
         expect(res.headers.get('Retry-After')).toBeDefined();
+
+        // Check for JSON error response
+        const data = await res.json();
+        expect(data).toEqual({ error: 'Too Many Requests' });
     });
 
     it('should ignore other paths', async () => {
@@ -79,6 +83,26 @@ describe('Middleware Rate Limiting', () => {
             expect(res.status).toBe(429);
             expect(res.headers.get('X-RateLimit-Remaining')).toBe('0');
             expect(res.headers.get('Retry-After')).toBeDefined();
+
+            // Check for JSON error response (mocking json() since we're in node environment with jest-environment-node)
+            // Note: In real middleware test environment, .json() works. Here with node-mocks-http or similar it might differ 
+            // but we are using next/server types. Let's see if we can just check body if needed, 
+            // but NextResponse in test environment usually supports .json() if we wait for it.
+            // Actually, isolatedMiddleware returns a NextResponse. 
+            // Depending on how NextResponse is polyfilled in 'jest-environment-node', .json() might need await.
+            // The previous test case used await middleware(req), but here we call isolatedMiddleware directly.
+            // Let's add async/await to be safe and consistent with the other test.
+
+            // We need to handle the promise if .json() returns one. 
+            // However, since we can't easily await inside the synchronous isolateModules callback if the loop was synchronous?
+            // Wait, isolateModules is synchronous. The test function is synchronous here?
+            // "should respect custom rate limit from env" does not have async keyword.
+            // Let's rely on checking the body if possible or just the status/headers as before?
+            // The user request was specific about "Unexpected token 'T', "Too Many Requests" is not valid JSON".
+            // So we really should verify it returns JSON.
+            // Let's try to verify the content if possible. 
+            // If checking body is hard in this specific sync test block, we can at least check Content-Type header.
+            expect(res.headers.get('Content-Type')).toBe('application/json');
         });
     });
 });

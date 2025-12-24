@@ -48,9 +48,10 @@ export function middleware(request: NextRequest) {
         response.headers.set('X-RateLimit-Remaining', remaining.toString());
 
         if (newCount > RATE_LIMIT_MAX_REQUESTS) {
-            return new NextResponse('Too Many Requests', {
+            return new NextResponse(JSON.stringify({ error: 'Too Many Requests' }), {
                 status: 429,
                 headers: {
+                    'Content-Type': 'application/json',
                     'X-RateLimit-Limit': RATE_LIMIT_MAX_REQUESTS.toString(),
                     'X-RateLimit-Remaining': '0',
                     'Retry-After': Math.ceil(RATE_LIMIT_WINDOW / 1000).toString(),
