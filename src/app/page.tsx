@@ -74,7 +74,7 @@ const Button = ({ className, variant = 'primary', isLoading, children, ...props 
 };
 
 export default function Page() {
-  const { theme, setTheme } = useTheme();
+  const { theme, setTheme, resolvedTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
   const [mode, setMode] = useState<'scrape' | 'manual' | 'url'>('scrape');
   const [loading, setLoading] = useState(false);
@@ -174,11 +174,11 @@ export default function Page() {
           </div>
 
           <button
-            onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+            onClick={() => setTheme(resolvedTheme === 'dark' ? 'light' : 'dark')}
             className="p-2 rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
             aria-label="Toggle theme"
           >
-            {theme === 'dark' ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
+            {resolvedTheme === 'dark' ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
           </button>
         </div>
       </header>
