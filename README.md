@@ -23,7 +23,14 @@ A modern, responsive web interface for generating broadcast-ready ESRB rating sl
 - **Live Preview**: Real-time visual feedback of the generated slate with detailed game info.
 - **Dark Mode**: Sleek UI with support for both light and dark themes.
 - **Docker Support**: Containerized for easy deployment.
+- **API Rate Limiting**: Protects backend resources using IP-based rate limiting (10 requests/15 min by default, configurable).
 - **Comprehensive Testing**: Fully tested with Jest and React Testing Library.
+
+## Environment Variables
+
+| Variable | Description | Default |
+|----------|-------------|---------|
+| `RATE_LIMIT_MAX_REQUESTS` | Maximum number of requests allowed per 15-minute window for the `/api/generate` endpoint. | `10` |
 
 ## Tech Stack
 
