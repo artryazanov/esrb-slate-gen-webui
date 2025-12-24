@@ -30,15 +30,15 @@ describe('Middleware Rate Limiting', () => {
             // Strictly speaking middleware that passes returns a response that indicates continuation.
             // In Next.js middleware, NextResponse.next() returns a response with specific internal headers or just a 200 ok for testing purposes.
             expect(res.status).toBe(200);
-            expect(res.headers.get('X-RateLimit-Limit')).toBe('10');
-            expect(res.headers.get('X-RateLimit-Remaining')).toBe((10 - (i + 1)).toString());
+            expect(res.headers.get('X-RateLimit-Limit')).toBe('30');
+            expect(res.headers.get('X-RateLimit-Remaining')).toBe((30 - (i + 1)).toString());
         }
     });
 
     it('should block requests over the limit', async () => {
         const ip = '2.2.2.2';
         // Exhaust limit
-        for (let i = 0; i < 10; i++) {
+        for (let i = 0; i < 30; i++) {
             const req = createRequest(ip);
             await middleware(req);
         }

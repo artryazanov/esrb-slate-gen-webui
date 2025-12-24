@@ -4,7 +4,7 @@ import { LRUCache } from 'lru-cache';
 
 // Rate limit configuration
 const RATE_LIMIT_WINDOW = 15 * 60 * 1000; // 15 minutes
-const RATE_LIMIT_MAX_REQUESTS = Number(process.env.RATE_LIMIT_MAX_REQUESTS) || 10; // Max requests per window, default 10
+const RATE_LIMIT_MAX_REQUESTS = Number(process.env.RATE_LIMIT_MAX_REQUESTS) || 30; // Max requests per window, default 30
 
 // Create the cache for rate limiting
 // Note: In a serverless environment (like Vercel), this cache might be reset 
