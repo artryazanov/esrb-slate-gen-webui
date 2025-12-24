@@ -74,7 +74,7 @@ const Button = ({ className, variant = 'primary', isLoading, children, ...props 
 };
 
 export default function Page() {
-  const { theme, setTheme, resolvedTheme } = useTheme();
+  const { setTheme, resolvedTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
   const [mode, setMode] = useState<'scrape' | 'manual' | 'url'>('scrape');
   const [loading, setLoading] = useState(false);

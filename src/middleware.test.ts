@@ -2,7 +2,7 @@
  * @jest-environment node
  */
 import { middleware } from './middleware';
-import { NextRequest, NextResponse } from 'next/server';
+import { NextRequest } from 'next/server';
 
 describe('Middleware Rate Limiting', () => {
     const SCRIPT_NAME = '/api/generate';
@@ -63,6 +63,7 @@ describe('Middleware Rate Limiting', () => {
         jest.isolateModules(() => {
             process.env.RATE_LIMIT_MAX_REQUESTS = '5';
             // Require fresh module to pick up env var
+            // eslint-disable-next-line @typescript-eslint/no-require-imports
             const { middleware: isolatedMiddleware } = require('./middleware');
             const ip = '3.3.3.3';
 
