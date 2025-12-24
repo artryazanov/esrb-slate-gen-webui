@@ -73,7 +73,15 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 
 ## Docker Usage
 
-You can build and run the application using Docker.
+You can run the application using the pre-built Docker image or build it yourself.
+
+### Run from Docker Hub
+
+```bash
+docker run -p 3000:3000 artryazanov/esrb-slate-gen-webui
+```
+
+### Build Locally
 
 1. **Build the image:**
    ```bash
