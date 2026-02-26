@@ -50,8 +50,12 @@ jobs:
     - name: Install system dependencies for canvas
       run: sudo apt-get update && sudo apt-get install -y build-essential libcairo2-dev libpango1.0-dev libjpeg-dev libgif-dev librsvg2-dev
     - run: npm ci
-    - run: npm test
-
+    - run: npm test -- --coverage
+    - name: Upload coverage reports to Codecov
+      uses: codecov/codecov-action@v5
+      with:
+        token: ${{ secrets.CODECOV_TOKEN }}
+        slug: artryazanov/esrb-slate-gen-webui
   build:
     runs-on: ubuntu-latest
     needs: [lint, type-check, test] # Ensure code quality before building

@@ -1,18 +1,19 @@
 # ESRB Slate Generator Web UI
 
-A modern, responsive web interface for generating broadcast-ready ESRB rating slates. This tool serves as a frontend for the [esrb-slate-gen](https://github.com/artryazanov/esrb-slate-gen) library, allowing you to easily create high-resolution rating images by scraping official data or entering details manually.
-
-**[Live Demo](https://esrb-slate-gen-webui.vercel.app/)**
-
-<img src="https://raw.githubusercontent.com/artryazanov/esrb-slate-gen-webui/main/esrb-slate-gen-webui-preview.png" alt="ESRB Slate Gen Preview" width="640" />
-
 [![CI](https://github.com/artryazanov/esrb-slate-gen-webui/actions/workflows/ci.yml/badge.svg)](https://github.com/artryazanov/esrb-slate-gen-webui/actions/workflows/ci.yml)
+[![codecov](https://codecov.io/gh/artryazanov/esrb-slate-gen-webui/graph/badge.svg?token=YOUR_TOKEN)](https://codecov.io/gh/artryazanov/esrb-slate-gen-webui)
 [![Docker Publish](https://github.com/artryazanov/esrb-slate-gen-webui/actions/workflows/docker-publish.yml/badge.svg)](https://github.com/artryazanov/esrb-slate-gen-webui/actions/workflows/docker-publish.yml)
 [![License](https://img.shields.io/github/license/artryazanov/esrb-slate-gen-webui)](LICENSE)
 ![Next.js](https://img.shields.io/badge/Next.js_16-black?style=flat&logo=next.js&logoColor=white)
 ![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=flat&logo=typescript&logoColor=white)
 ![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS_4-38B2AC?style=flat&logo=tailwind-css&logoColor=white)
 ![React](https://img.shields.io/badge/React_19-20232A?style=flat&logo=react&logoColor=61DAFB)
+
+A modern, responsive web interface for generating broadcast-ready ESRB rating slates. This tool serves as a frontend for the [esrb-slate-gen](https://github.com/artryazanov/esrb-slate-gen) library, allowing you to easily create high-resolution rating images by scraping official data or entering details manually.
+
+**[Live Demo](https://esrb-slate-gen-webui.vercel.app/)**
+
+<img src="https://raw.githubusercontent.com/artryazanov/esrb-slate-gen-webui/main/esrb-slate-gen-webui-preview.png" alt="ESRB Slate Gen Preview" width="640" />
 
 ## Features
 
